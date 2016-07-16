@@ -1,0 +1,90 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<title>Title of the document</title>
+
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+	<script src="/js/exif.js"></script>
+	<script>
+		function cameraReturn() {
+			var val = $("#cameraSelect").val();
+			if (val) {
+				alert(val);
+				$("#cameraOutput").attr("src", val);
+			}
+		}
+	
+		function computeValue() {
+			var d = 2336.8; // in mm or 92 inches
+			var ph = 1690; // height in image in pixels 
+			var fl = 4.8; // focal length in mm
+			var im = 5312; // image height in pixels
+			var FocalLengthIn35mmFilm = 31;
+			
+			var sf = FocalLengthIn35mmFilm/fl; // scale factor
+			var full_frame_diagonal = 43.3; // 35mm full frame (24mm x 36mm)
+			var sensor_diagonal = full_frame_diagonal/sf;
+			var ratio_angle = Math.atan(16/9);
+			var sh = sensor_diagonal * Math.sin(ratio_angle); // sensor height
+			
+
+			
+			var rh = (d*ph*sh)/(fl*im); // real height in mm
+			alert(rh);
+		}
+	
+		$(document).ready(function() {
+			
+			
+			document.getElementById('cameraSelect').onchange = function (evt) {
+				var tgt = evt.target || window.event.srcElement,
+					files = tgt.files;
+
+				// FileReader support
+				if (FileReader && files && files.length) {
+					var fr = new FileReader();
+					fr.onload = function () {
+					
+						var image = document.getElementById("cameraOutput");
+						image.onload = function() {
+							EXIF.getData(image, function() {
+								//alert(EXIF.pretty(this));
+								
+								//$("body").html(JSON.stringify(EXIF.getAllTags(this)));
+								
+								var ImageWidth = EXIF.getTag(this, "ImageWidth");
+								var ImageHeight = EXIF.getTag(this, "ImageHeight");
+								var FocalLength = EXIF.getTag(this, "FocalLength");
+								var FocalLengthIn35mmFilm = EXIF.getTag(this, "FocalLengthIn35mmFilm");
+								var Orientation = EXIF.getTag(this, "Orientation");
+								
+
+							});
+						};
+						image.src = fr.result;
+						//$("body").append(fr.result);
+					}
+					fr.readAsDataURL(files[0]);
+				}
+
+				// Not supported
+				else {
+					// fallback -- perhaps submit the input to an iframe and temporarily store
+					// them on the server until the user's session ends.
+				}
+			}
+		});
+	</script>
+
+</head>
+
+<body>
+
+
+	<input id="cameraSelect" type="file" accept="image/*" capture="camera">
+	<div>
+		<img id="cameraOutput" />
+	</div>
+</body>
+
+</html> 
