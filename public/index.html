@@ -1,36 +1,73 @@
  <!DOCTYPE html>
 <html>
 <head>
-<title>Title of the document</title>
+	<title>Title of the document</title>
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+	
+	<style>
+		html,body {
+			padding:0;
+			margin:0;
+			width:100%;
+			height:100%;
+		}
+		#myCanvas, #myCanvas2, #myCanvas3 {
+			position:absolute;
+		}
+		#myCanvas {
+			z-index:0;
+		}
+		#myCanvas2 {
+			z-index:2;
+		}
+		#myCanvas3 {
+			z-index:1;
+		}
+		#controls {
+			position:absolute;
+			bottom:0;
+			width:100%;
+			z-index:3;
+			color:red;
+			display:none;
+		}
+		#slider {
+			width:100%;
+		}
+		#cameraOutput {
+			display:none;
+		}
+		body {
+			background-color:gray;
+		}
+	</style>
 
 	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 	<script src="/js/exif.js"></script>
 	<script>
-		function cameraReturn() {
-			var val = $("#cameraSelect").val();
-			if (val) {
-				alert(val);
-				$("#cameraOutput").attr("src", val);
-			}
-		}
-	
-		function computeValue() {
-			var d = 2336.8; // in mm or 92 inches
-			var ph = 1690; // height in image in pixels 
-			var fl = 4.8; // focal length in mm
-			var im = 5312; // image height in pixels
-			var FocalLengthIn35mmFilm = 31;
+		function computeValue(ImageWidth, ImageHeight, FocalLength, FocalLengthIn35mmFilm, Orientation, Distance, ObjectHeight) {
+			var r1 = Math.max(ImageWidth, ImageHeight);
+			var r2 = Math.min(ImageWidth, ImageHeight);
+			
+			var d = Distance; // in mm or 92 inches
+			var ph = ObjectHeight; // height in image in pixels 
+			var fl = FocalLength; // focal length in mm
 			
 			var sf = FocalLengthIn35mmFilm/fl; // scale factor
 			var full_frame_diagonal = 43.3; // 35mm full frame (24mm x 36mm)
 			var sensor_diagonal = full_frame_diagonal/sf;
-			var ratio_angle = Math.atan(16/9);
+			var ratio_angle = Math.atan(r1/r2);
 			var sh = sensor_diagonal * Math.sin(ratio_angle); // sensor height
 			
-
+			var rh = (d*ph*sh)/(fl*ImageHeight); // real height in mm
 			
-			var rh = (d*ph*sh)/(fl*im); // real height in mm
-			alert(rh);
+			return rh;
+		}
+	
+		function drawBox(context, c1x, c1y, c2x, c2y) {
+			context.strokeStyle="red";
+			context.rect(Math.min(c1x, c2x), Math.min(c1y, c2y), Math.max(c1x, c2x)-Math.min(c1x, c2x), Math.max(c1y, c2y)-Math.min(c1y, c2y)); 
+			context.stroke();
 		}
 	
 		$(document).ready(function() {
@@ -58,11 +95,116 @@
 								var FocalLengthIn35mmFilm = EXIF.getTag(this, "FocalLengthIn35mmFilm");
 								var Orientation = EXIF.getTag(this, "Orientation");
 								
+								var w = ImageWidth, h = ImageHeight;
+								var sw = $(document).width(), sh = $(document).height();
+								
+								if (Orientation >= 5) {
+									var t = ImageWidth;
+									ImageWidth = ImageHeight;
+									ImageHeight = t;
+								}
+								
+								//computeValue(ImageWidth, ImageHeight, FocalLength, FocalLengthIn35mmFilm, Orientation, 2336.8, 1690);
+								//alert(ImageWidth + " x " + ImageHeight);
+			
+								var canvas = $('<canvas id="myCanvas" width="' + sw + '" height="' + sh + '"></canvas>');
+								var canvas2 = $('<canvas id="myCanvas2" width="' + sw + '" height="' + sh + '"></canvas>');
+								var canvas3 = $('<canvas id="myCanvas3" width="' + sw + '" height="' + sh + '"></canvas>');
+								$("#content").html(canvas).append(canvas2).append(canvas3);
+								
+								canvas = canvas[0];
+								canvas2 = canvas2[0];
+								canvas3 = canvas3[0];
+								
+								var context = canvas.getContext('2d');
+								var context2 = canvas2.getContext('2d');
+								var context3 = canvas3.getContext('2d');
+								
+								
+								
+								if (Orientation == 6) {
+									var rotate = Math.PI/2;
+									context.translate($(document).width(), 0); 
+									context.rotate(rotate); 
+									context.drawImage(image, 0, 0, w, h, 0, 0, sh, sw);
+								} else {
+									context.drawImage(image, 0, 0, w, h, 0, 0, sw, sh);
+								}
 
+
+
+								var x_scale = ImageWidth/sw;
+								var y_scale = ImageHeight/sh;
+								
+								
+
+								var state = 0;
+								var c1x, c1y, c2x, c2y;
+								
+								
+
+								
+								function setHandlers() {
+									$('#myCanvas2').click(function(event) {
+										//alert(1);
+										
+										
+										var x = event.offsetX, y = event.offsetY;
+
+										if (state == 0) {
+											c1x = x;
+											c1y = y;
+										} else if (state == 1) {
+											c2x = x;
+											c2y = y;
+											
+											drawBox(context2, c1x, c1y, c2x, c2y);
+											
+											
+											var bw = Math.max(c1x, c2x)-Math.min(c1x, c2x);
+											var bh = Math.max(c1y, c2y)-Math.min(c1y, c2y);
+											
+											var tw = x_scale * bw;
+											var th = y_scale * bh;
+											
+											
+											var f = function() {
+												context3.clearRect(0, 0, canvas3.width, canvas3.height);
+
+												//computeValue(ImageWidth, ImageHeight, FocalLength, FocalLengthIn35mmFilm, Orientation, 2336.8, 1690);
+												var feet = $("#slider")[0].value;
+												var distance = parseFloat(feet) * 304.8;
+												
+												var rw = computeValue(ImageWidth, ImageHeight, FocalLength, FocalLengthIn35mmFilm, Orientation, distance, tw);
+												var rh = computeValue(ImageWidth, ImageHeight, FocalLength, FocalLengthIn35mmFilm, Orientation, distance, th);
+												
+												//alert(feet + "," + rw + "," + rh);
+												
+												//alert(rw + "," + rh);
+												context3.fillStyle="black";
+												context3.font = "15px Arial";
+												context3.fillText("Target distance: " + feet + "feet",10,20);
+												context3.fillText((rw/10).toPrecision(5) + "cm x " + (rh/10).toPrecision(5) + "cm",10,40);
+											};
+											
+											$("#controls").show();
+											$("#slider").on("input", function(){
+												$("#sliderVal").html(this.value);
+												f();
+											}).trigger("input");
+										}
+										
+										state += 1;
+										return false;
+									});
+								}
+								setHandlers();	
+								
+								
+								
 							});
 						};
 						image.src = fr.result;
-						//$("body").append(fr.result);
 					}
 					fr.readAsDataURL(files[0]);
 				}
@@ -80,10 +222,16 @@
 
 <body>
 
-
-	<input id="cameraSelect" type="file" accept="image/*" capture="camera">
+	<div id="content">
+		<input id="cameraSelect" type="file" accept="image/*" capture="camera">
+	</div>
 	<div>
-		<img id="cameraOutput" />
+		<img id="cameraOutput" width="300px" />
+	</div>
+	<div id="controls">
+		<label for="slider">Distance from target in feet: <span id="sliderVal"></span></label>
+		<br/>
+		<input id="slider" type="range" min="0" max="20" step="1" value="12">
 	</div>
 </body>
 
