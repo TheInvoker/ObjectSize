@@ -141,9 +141,9 @@
 			var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
 			var data = imageData.data;
 			var imageData2 = context2.getImageData(0, 0, canvas2.width, canvas2.height);
-			var data2 = imageData.data;
+			var data2 = imageData2.data;
 			var imageData3 = context3.getImageData(0, 0, canvas3.width, canvas3.height);
-			var data3 = imageData.data;
+			var data3 = imageData3.data;
 			
 			for(var i = 0, n = data.length; i < n; i += 4) {
 				var red = data[i], green = data[i + 1], blue = data[i + 2], alpha = data[i + 3];
@@ -154,6 +154,20 @@
 				newImageData.data[i+1] = green;
 				newImageData.data[i+2] = blue;
 				newImageData.data[i+3] = alpha;
+				
+				if (alpha2 > 0) {
+					newImageData.data[i+0] = (red2 * alpha2/255) + (newImageData.data[i+0] * (1.0 - alpha2/255));
+					newImageData.data[i+1] = (green2 * alpha2/255) + (newImageData.data[i+1] * (1.0 - alpha2/255));
+					newImageData.data[i+2] = (blue2 * alpha2/255) + (newImageData.data[i+2] * (1.0 - alpha2/255));
+					newImageData.data[i+3] = 255;
+				}
+				
+				if (alpha3 > 0) {
+					newImageData.data[i+0] = (red3 * alpha3/255) + (newImageData.data[i+0] * (1.0 - alpha3/255));
+					newImageData.data[i+1] = (green3 * alpha3/255) + (newImageData.data[i+1] * (1.0 - alpha3/255));
+					newImageData.data[i+2] = (blue3 * alpha3/255) + (newImageData.data[i+2] * (1.0 - alpha3/255));
+					newImageData.data[i+3] = 255;
+				}
 			}
 			
 			newContext.putImageData(newImageData, 0, 0); // at coords 0,0
