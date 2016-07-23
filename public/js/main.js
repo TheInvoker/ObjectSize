@@ -133,7 +133,9 @@ function saveClick(link, canvas, context, canvas2, context2, canvas3, context3) 
 	link.download = 'canvas.png';
 }
 
-function loadedExif(image) {		
+
+
+function loadedExif(sw, sh, image) {		
 	var ImageWidth = EXIF.getTag(image, "ImageWidth");
 	var ImageHeight = EXIF.getTag(image, "ImageHeight");
 	var FocalLength = EXIF.getTag(image, "FocalLength");
@@ -141,8 +143,6 @@ function loadedExif(image) {
 	var Orientation = EXIF.getTag(image, "Orientation");
 	
 	var w = ImageWidth, h = ImageHeight;
-	var sw = document.body.clientWidth, sh = document.body.clientHeight;
-
 	
 	// if you took the image sideways
 	if (Orientation >= 5) {
@@ -166,7 +166,7 @@ function loadedExif(image) {
 	
 	if (Orientation == 6) {
 		var rotate = Math.PI/2;
-		context.translate($(document).width(), 0); 
+		context.translate(sw, 0); 
 		context.rotate(rotate); 
 		context.drawImage(image, 0, 0, w, h, 0, 0, sh, sw);
 	} else {
@@ -197,11 +197,11 @@ function loadedExif(image) {
 	});
 }
 
-function loadedImage(result) {
+function loadedImage(sw, sh, result) {
 	var image = document.getElementById("cameraOutput");
 	image.onload = function() {
 		EXIF.getData(image, function() {
-			loadedExif(image);
+			loadedExif(sw, sh, image);
 		});
 	};
 	image.src = result;
@@ -213,6 +213,8 @@ $(document).ready(function() {
 		return false;
 	});
 	
+	var sw = document.body.clientWidth, sh = document.body.clientHeight;
+	
 	document.getElementById('cameraSelect').onchange = function (evt) {
 		var tgt = evt.target || window.event.srcElement, files = tgt.files;
 
@@ -220,7 +222,7 @@ $(document).ready(function() {
 		if (FileReader && files && files.length) {
 			var fr = new FileReader();
 			fr.onload = function() {
-				loadedImage(fr.result);
+				loadedImage(sw, sh, fr.result);
 			};
 			fr.readAsDataURL(files[0]);
 		} else {
