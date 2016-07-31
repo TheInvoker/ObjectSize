@@ -169,9 +169,15 @@ body {
 	display:inline-block;
 }
 
-
-
-
+.color1 {
+	background-color:rgb(104, 183, 7);
+}
+.color2 {
+	background-color:rgb(255, 180, 0);
+}
+.color3 {
+	background-color:rgb(186, 0, 255);
+}
 
 
 /* FOOTER */
