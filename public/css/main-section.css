@@ -1,0 +1,66 @@
+body
+{
+  font-family: 'Raleway', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+div.full
+{
+  width: 100%;
+}
+
+div.green
+{
+  background-color: #2BC61B;
+}
+
+div.blue
+{
+  background-color: #4581E9;
+}
+
+div.red
+{
+  background-color: #EE5040;
+}
+
+img.circle
+{
+  border-radius: 50%;
+  border: 1px solid black;
+}
+
+@media only screen and (max-width: 873px)
+{
+  div.half
+  {
+    width: 100%;
+  }
+
+  div.third
+  {
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 874px)
+{
+  div.half
+  {
+    width: 49.7%;
+    display: inline-block;
+  }
+
+  div.third
+  {
+    width: 33%;
+    display: inline-block;
+  }
+
+  div.section
+  {
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+}
