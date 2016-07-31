@@ -26,11 +26,7 @@ body {
 	color:white;
 }
 .heading {
-	font-size:1.5em;
-	text-align:left;
-}
-.sub-heading {
-	font-size:1.3em;
+	font-size:2em;
 	text-align:center;
 }
 
@@ -130,6 +126,20 @@ body {
 	background-position:0 center;
 	height:500px;
 }
+
+/* PHONE TEMPLATE */
+.phone-template {
+	background-image:url('../images/mockups3.png');
+	background-repeat:no-repeat;
+	background-size:cover;
+	width:200px;
+	height:382px;
+	position:absolute;
+	right:0;
+	bottom:0;
+	margin:10px;
+}
+
 
 
 /* STEP */
