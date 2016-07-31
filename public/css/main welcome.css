@@ -8,9 +8,32 @@ body {
 	overflow-y: hidden;
 	display:flex;
 	flex-flow:column;
-	font-family: Open Sans;
+	font-family: Raleway;
 	background-color:white;
 }
+
+
+
+.shade {
+	background-color:black;
+}
+.shadow {
+	/*box-shadow: 0px 0px 7px #000000;*/
+}
+.intro {
+	padding:1em;
+	background-color:#15b386;
+	color:white;
+}
+.heading {
+	font-size:1.5em;
+	text-align:left;
+}
+.sub-heading {
+	font-size:1.3em;
+	text-align:center;
+}
+
 
 
 .content {
@@ -26,8 +49,123 @@ body {
 }
 
 
-.footer {
 
+
+
+
+/* TOP MENU */
+.menu {
+	text-align:right;
+}
+.menu .menu-item {
+	color:white;
+	padding:1em;
+	cursor:pointer;
+	display:inline-block;
+	text-align:center;
+	transition-property: background-color,color;
+	transition-duration: 0.3s;
+}
+.menu .menu-item:hover {
+	background-color:#68e4ff;
+	color:black;
+}
+.menu .menu-item.selected {
+	background-color:white;
+	color:black;
+}
+.menu .menu-item.selected:hover {
+	background-color:white;
+	color:black;
+}
+.menu .menu-collapse-button-container {
+	height:3em;
+	display:none;
+	text-align:right;
+}
+.menu .menu-collapse-button {
+	width:3em;
+	height:3em;
+	background-image:url('../images/menu.svg');
+	background-repeat:no-repeat;
+	background-size:cover;
+	background-position:center center;
+	cursor:pointer;
+	display:inline-block;
+	transition-property: background-color;
+	transition-duration: 0.3s;
+}
+.menu .menu-collapse-button:hover {
+	background-color:#68e4ff;
+}
+@media screen and (max-width: 480px) {
+	.menu .menu-header {
+		max-height:0px;
+		transition: max-height 1s linear;
+		overflow-y:hidden;
+		border-bottom:1px solid rgba(113, 113, 113, 1);
+	}
+	.menu.open .menu-header {
+		max-height:1000px;
+		transition: max-height 1s linear;
+	}
+	.menu .menu-item {
+		display:block;
+	}
+	.menu .menu-collapse-button-container {
+		display:block;
+	}
+}
+
+
+
+/* BANNER */
+#banner {
+	position:relative;
+}
+.carousel {
+	background-image:url('../images/download.jpg');
+	background-repeat:no-repeat;
+	background-size:cover;
+	background-position:0 center;
+	height:500px;
+}
+
+
+/* STEP */
+#howtouse, #features, #benefits {
+	padding:1em;
+}
+.step-container {
+	text-align:center;
+	margin:1em 0;
+}
+.step-container .step {
+	display:inline-block;
+	width:30%;
+	min-width:200px;
+	margin:0.5em;
+}
+.step-container .step .step-img {
+	width:30%;
+	display:inline-block;
+	border-radius:50%;
+	border:1px solid black;
+	padding:1em;
+	margin-bottom:0.5em;
+}
+.step-container .step .step-img img {
+	width:100%;
+	display:inline-block;
+}
+
+
+
+
+
+
+/* FOOTER */
+.footer {
 	padding:1em;
 	flex:0 0 auto;
 	text-align:center;
