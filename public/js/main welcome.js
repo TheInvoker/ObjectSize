@@ -305,14 +305,22 @@ function loadedExif(sw, sh, image) {
 	
 	$('#myCanvas3').click(function(event) {
 		canvasClick(canvas2, context2, canvas3, context3, event, x_scale, y_scale, exifData);
+		return false;
 	});
 	
 	$('#reset').click(function() {
 		resetClick(canvas2, context2, canvas3, context3);
+		return false;
 	});
 	
 	$('#save').click(function() {
 		saveClick(this, canvas, context, canvas2, context2, canvas3, context3);
+		return false;
+	});
+	
+	$('#back').click(function() {
+		window.location = ''
+		return false;
 	});
 }
 function loadedImage(sw, sh, result) {

@@ -131,7 +131,7 @@ canvas {
 #cameraOutput {
 	display:none;
 }
-#reset, #save {
+#reset, #save, #back {
 	border-radius:5px;
 	padding:4px;
 	margin:0 3px;
@@ -147,6 +147,11 @@ canvas {
 	margin-right:10px;
 	background-color:green;
 	color:white;
+}
+#back {
+	background-color:#0056b7;
+	color:white;
+	float:right;
 }
 
 
