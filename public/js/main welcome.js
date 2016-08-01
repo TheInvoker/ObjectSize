@@ -44,30 +44,10 @@ $(document).ready(function() {
 		$("#cameraSelect").click();
 		return false;
 	});
-	$("#image_upload_form").submit(function(e, data) {
-		var formData = new FormData($(this)[0]);
-
-		$.ajax({
-			url: "/upload",
-			type: "POST",
-			data: formData,
-			cache: false,
-			contentType: false,
-			processData: false,
-			success: function (msg) {
-				$(".menu, .content, #demo_page").toggleClass("close");
-				handleImage(data);
-			},
-			error: function(xhr, textStatus, errorThrown){
-				alert('request failed');
-			}
-		});
-
-		return false;
-	});
-	
 	document.getElementById('cameraSelect').onchange = function (evt) {
-		$('#image_upload_form').trigger('submit', evt.target || window.event.srcElement);
+		//$('#image_upload_form').trigger('submit', evt.target || window.event.srcElement);
+		$(".menu, .content, #demo_page").toggleClass("close");
+		handleImage(evt.target || window.event.srcElement);
 	}
 });
 
@@ -198,6 +178,25 @@ function resetClick(canvas2, context2, canvas3, context3) {
 	$("#slider").unbind("input");
 	return false;
 }
+
+
+
+function uploadImage(dataURL) {
+	$.ajax({
+		url : "/upload",
+		type: "POST",
+		data : {
+			'data' : dataURL
+		},
+		success: function(data, textStatus, jqXHR) {
+			alert(data);
+		},
+		error: function (jqXHR, textStatus, errorThrown) {
+			alert("failed");
+		}
+	});
+}
+
 function saveClick(link, canvas, context, canvas2, context2, canvas3, context3) {
 	var newCanvas = $('<canvas width="' + canvas.width + '" height="' + canvas.height + '"></canvas>');
 	newCanvas = newCanvas[0];
@@ -238,8 +237,11 @@ function saveClick(link, canvas, context, canvas2, context2, canvas3, context3) 
 	
 	newContext.putImageData(newImageData, 0, 0); // at coords 0,0\
 	
-	link.href = newCanvas.toDataURL();
-	link.download = 'canvas.png';
+	var href = newCanvas.toDataURL();
+	uploadImage(href);
+	
+	//link.href = href;
+	//link.download = 'canvas.png';
 }
 function loadedExif(sw, sh, image) {		
 	var ImageWidth = EXIF.getTag(image, "ImageWidth");

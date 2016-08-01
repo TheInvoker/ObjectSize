@@ -65,36 +65,22 @@ app.post('/upload', function (req, res, next) {
 		if (err) {
 			return console.log('ERROR', err);
 		}
+		var dateURL = fields.data;
+		
+		// save image
+		var base64Data = dateURL.replace(/^data:image\/png;base64,/, "");
+		fs.writeFile(__dirname + '/images/uploads/out.png', base64Data, 'base64', function(err) {
+			if (err) {
+				console.log(err);
+			}
+		});
 	});
 
 	form.on('end', function(fields, files) {
-		if (this.openedFiles[0].size > 0) {
-		
-			/* Temporary location of our uploaded file */
-			var temp_path = this.openedFiles[0].path;
-			/* The file name of the uploaded file */
-			var file_name = this.openedFiles[0].name;
-			/* Location where we want to copy the uploaded file */
-			var new_location = __dirname + '/images/uploads/' + file_name;
-
-			fs.rename(temp_path, new_location, function(err) {  
-				if (err) {
-					return console.log('ERROR', err);
-				} else {
-					console.log("success!");
-					LATEST_UPLOAD_LOCATION = new_location;
-					res.writeHead(200); 
-					res.end(JSON.stringify({
-						'status':'ok'
-					}));
-				}
-			});
-		} else {	
-			res.writeHead(200); 
-			res.end(JSON.stringify({
-				'status':'missing'
-			}));
-		}
+		res.writeHead(200); 
+		res.end(JSON.stringify({
+			'status':'ok'
+		}));
 	});
 });
 
@@ -106,7 +92,6 @@ app.post('/dimensions', function (req, res, next) {
 }, function(req, res) {
 	var form = new formidable.IncomingForm();
 	var ImageWidth, ImageHeight, FocalLength, FocalLengthIn35mmFilm, Orientation, Distance, ObjectWidth, ObjectHeight;
-	
 	
 	form.parse(req, function(err, fields, files) {
 		if (err) {
