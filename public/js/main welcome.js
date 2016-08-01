@@ -151,9 +151,9 @@ function f(canvas, context, exifData, tw, th) {
 	var rw = computeValue(exifData.ImageWidth, exifData.ImageHeight, exifData.FocalLength, exifData.FocalLengthIn35mmFilm, exifData.Orientation, distance, tw, th, function(data) {
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		context.fillStyle="red";
-		context.font = "15px Arial";
-		context.fillText("Target distance: " + feet + "feet",10,20);
-		context.fillText((data.data.rw/10).toPrecision(5) + "cm x " + (data.data.rh/10).toPrecision(5) + "cm",10,40);
+		context.font = "15px Raleway";
+		context.fillText("Target distance: " + feet + " feet",10,20);
+		context.fillText((data.data.rw/10).toPrecision(5) + " cm x " + (data.data.rh/10).toPrecision(5) + " cm",10,40);
 	});
 }
 function drawCircle(context, centerX, centerY, radius) {
