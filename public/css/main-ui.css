@@ -2,13 +2,14 @@ body
 {
   margin: 0;
   padding: 0;
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Exo', sans-serif;
   height: 100%;
+  overflow-x: hidden;
 }
 
 div.ui
 {
-  background-image: url('http://static.vecteezy.com/system/resources/previews/000/094/491/original/polygonal-texture-background-vector.jpg');
+  background-color: black;
   min-height: 100%;
 }
 
@@ -21,26 +22,49 @@ div.ui:after
 div.ui:after, div.control-panel
 {
   display: inline-block;
-  margin-top: -70px;
+  margin-top: -60px;
 }
 
 div.control-panel
 {
-  background-color: black;
+  background-color: #AFAFA3;
   width: 100%;
   padding: 10px;
+}
+
+p#text
+{
+  color: red;
+  display: inline;
+}
+
+input#distance-slider
+{
+  width: 200px;
+  height: 10px;
+  background-color: cyan;
+  -webkit-appearance: none;
+}
+
+input#distance-slider::-webkit-slider-thumb
+{
+  -webkit-appearance: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  background-color: #3D3D3D;
 }
 
 button.button
 {
   border-radius: 10%;
-  height: 50px;
-  width: 100px;
+  height: 40px;
+  width: 80px;
   font-family: 'Raleway', sans-serif;
   color: white;
-  font-size: 20px;
+  font-size: 15px;
   border: 0;
-  margin-right: 25px;
+  margin-right: 10px;
 }
 
 button.primary
