@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var fs = require('fs');
 var formidable = require('formidable');
+var uuid = require('node-uuid');
 
 
 app.use(express.static(__dirname + '/public'));
@@ -66,10 +67,11 @@ app.post('/upload', function (req, res, next) {
 			return console.log('ERROR', err);
 		}
 		var dateURL = fields.data;
+		var filename = uuid.v4();
 		
 		// save image
 		var base64Data = dateURL.replace(/^data:image\/png;base64,/, "");
-		fs.writeFile(__dirname + '/images/uploads/out.png', base64Data, 'base64', function(err) {
+		fs.writeFile(__dirname + '/images/uploads/' + filename + '.png', base64Data, 'base64', function(err) {
 			if (err) {
 				console.log(err);
 			}

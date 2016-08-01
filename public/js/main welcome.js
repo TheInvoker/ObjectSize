@@ -107,10 +107,15 @@ function computeValue(ImageWidth, ImageHeight, FocalLength, FocalLengthIn35mmFil
 		type: "POST",
 		data : formData,
 		success: function(data, textStatus, jqXHR) {
-			success(JSON.parse(data));
+			var data = JSON.parse(data);
+			if (data.status === 'ok') {
+				success(data.data);
+			} else {
+				alert(data.msg);
+			}
 		},
 		error: function (jqXHR, textStatus, errorThrown) {
-			alert("failed");
+			alert("Error Occured!");
 		}
 	});
 }
@@ -130,7 +135,7 @@ function f(canvas, context, exifData, tw, th) {
 		context.fillStyle="red";
 		context.font = "15px Raleway";
 		context.fillText("Target distance: " + feet + " feet",10,20);
-		context.fillText((data.data.rw/10).toPrecision(5) + " cm x " + (data.data.rh/10).toPrecision(5) + " cm",10,40);
+		context.fillText((data.rw/10).toPrecision(5) + " cm x " + (data.rh/10).toPrecision(5) + " cm",10,40);
 	});
 }
 function drawCircle(context, centerX, centerY, radius) {
@@ -189,10 +194,15 @@ function uploadImage(dataURL) {
 			'data' : dataURL
 		},
 		success: function(data, textStatus, jqXHR) {
-			alert(data);
+			var data = JSON.parse(data);
+			if (data.status === 'ok') {
+				alert("Saved!");
+			} else {
+				alert(data.msg);
+			}
 		},
 		error: function (jqXHR, textStatus, errorThrown) {
-			alert("failed");
+			alert("Error Occured!");
 		}
 	});
 }
