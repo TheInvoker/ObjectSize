@@ -46,6 +46,10 @@ body {
 
 
 /* DEMO */
+#trynow {
+	text-align:center;
+	padding:1em;
+}
 #image_upload_form {
 	display:none;
 }
@@ -55,6 +59,7 @@ body {
 	display:inline-block;
 	border:1px solid black;
 	cursor:pointer;
+	margin-top:1em;
 }
 #cameraSelectImage:hover {
 	background-color:orange;
@@ -65,7 +70,10 @@ body {
 }
 
 
-#splash_page.close {
+.menu.close {
+	display:none;
+}
+.content.close {
 	display:none;
 }
 #demo_page {
@@ -170,7 +178,7 @@ canvas {
 .menu .menu-collapse-button:hover {
 	background-color:#68e4ff;
 }
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 610px) {
 	.menu .menu-header {
 		max-height:0px;
 		transition: max-height 1s linear;

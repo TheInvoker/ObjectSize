@@ -58,7 +58,7 @@ $(document).ready(function() {
 			contentType: false,
 			processData: false,
 			success: function (msg) {
-				$("#splash_page, #demo_page").toggleClass("close");
+				$(".menu, .content, #demo_page").toggleClass("close");
 				handleImage(data);
 			},
 			error: function(xhr, textStatus, errorThrown){
@@ -145,12 +145,11 @@ function drawBox(context, canvas, c1x, c1y, c2x, c2y) {
 	context.closePath();
 }
 function f(canvas, context, exifData, tw, th) {
-	context.clearRect(0, 0, canvas.width, canvas.height);
-
 	var feet = $("#slider")[0].value;
 	var distance = parseFloat(feet) * 304.8;
 	
 	var rw = computeValue(exifData.ImageWidth, exifData.ImageHeight, exifData.FocalLength, exifData.FocalLengthIn35mmFilm, exifData.Orientation, distance, tw, th, function(data) {
+		context.clearRect(0, 0, canvas.width, canvas.height);
 		context.fillStyle="red";
 		context.font = "15px Arial";
 		context.fillText("Target distance: " + feet + "feet",10,20);
