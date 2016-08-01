@@ -16,11 +16,11 @@
 	</head>
 	<body>
 		<div class="menu">
-			<div class="menu-collapse-button-container shade shadow">
+			<div class="menu-collapse-button-container shade">
 				<div class="menu-collapse-button">
 				</div>
 			</div>
-			<div class="menu-header shadow shade">
+			<div class="menu-header shade">
 				<div class="menu-item" onclick="window.location.href='#trynow';">
 					Try Now!
 				</div><!--
@@ -198,12 +198,14 @@
 			<div id="content_container">
 				<img id="cameraOutput" width="300px" />
 			</div>
-			<div id="controls_container">
+			<div id="controls_container" class="shadow">
 				<div id="controls">
-					<a href="javascript:void(0);" id="reset">Reset</a><a href="javascript:void(0);" id="save">Save</a>
-					<label for="slider">Distance from target in feet: <span id="sliderVal"></span></label>
-					<br/>
-					<input id="slider" type="range" min="1" max="20" step="1" value="12">
+					<div class="buttons-container">
+						<a href="javascript:void(0);" class="shadow" id="reset">Reset</a><a href="javascript:void(0);" class="shadow" id="save">Save</a><label for="slider">Target Distance: <span id="sliderVal"></span> feet</label>
+					</div>
+					<div class="slider-container">
+						<input id="slider" type="range" min="1" max="20" step="1" value="12">
+					</div>
 				</div>
 			</div>
 		</div>
