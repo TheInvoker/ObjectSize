@@ -45,6 +45,82 @@ body {
 }
 
 
+/* DEMO */
+#image_upload_form {
+	display:none;
+}
+#cameraSelectImage {
+	border-radius:50%;
+	padding:1em;
+	display:inline-block;
+	border:1px solid black;
+	cursor:pointer;
+}
+#cameraSelectImage:hover {
+	background-color:orange;
+}
+#cameraSelectImage img {
+	width:100px;
+	height:100px;
+}
+
+
+#splash_page.close {
+	display:none;
+}
+#demo_page {
+	display:block;
+}
+#demo_page.close {
+	display:none;
+}
+
+
+
+canvas {
+	position:absolute;
+}
+#myCanvas {
+	z-index:0;
+}
+#myCanvas2 {
+	z-index:1;
+}
+#myCanvas3 {
+	z-index:2;
+}
+#controls_container {
+	text-align:center;
+	position:absolute;
+	bottom:0;
+	z-index:3;
+	width:100%;
+	display:none;
+}
+#controls {
+	width:95%;
+	color:red;
+	display:inline-block;
+	text-align:left;
+}
+#slider {
+	width:100%;
+	margin:0;
+	padding:0;
+}
+#cameraOutput {
+	display:none;
+}
+#reset, #save {
+	color:black;
+	background-color:#dbdbdb;
+	padding:4px;
+	margin:0 3px;
+	font-family:Arial;
+	text-decoration:none;
+	font-size:12px;
+}
+
 
 
 

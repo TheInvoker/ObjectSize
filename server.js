@@ -4,11 +4,9 @@ var fs = require('fs');
 var formidable = require('formidable');
 
 
-
-
-
 app.use(express.static(__dirname + '/public'));
 
+var LATEST_UPLOAD_LOCATION;
 
 
 // check if on mobile
@@ -17,7 +15,27 @@ function isMobile(req) {
     return /mobile/i.test(ua);
 }
 
+function computeValueHelper(ImageWidth, ImageHeight, FocalLength, FocalLengthIn35mmFilm, Orientation, Distance, ObjectHeight) {
+	var d = Distance; // in mm or 92 inches
+	var ph = ObjectHeight; // height in image in pixels 
+	var fl = FocalLength; // focal length in mm
+	
+	var sf = FocalLengthIn35mmFilm/fl; // scale factor
+	var full_frame_diagonal = Math.sqrt(24*24 + 36*36); // 35mm full frame (24mm x 36mm)
+	var sensor_diagonal = full_frame_diagonal/sf;
+	var ratio_angle = Math.atan(ImageHeight/ImageWidth);
+	var sh = sensor_diagonal * Math.sin(ratio_angle); // sensor height
+	
+	var rh = (d*ph*sh)/(fl*ImageHeight); // real height in mm
+	
+	return rh;
+}
 
+function computeValue(ImageWidth, ImageHeight, FocalLength, FocalLengthIn35mmFilm, Orientation, Distance, ObjectWidth, ObjectHeight) {
+	var w = computeValueHelper(ImageWidth, ImageHeight, FocalLength, FocalLengthIn35mmFilm, Orientation, Distance, ObjectWidth);
+	var h = computeValueHelper(ImageWidth, ImageHeight, FocalLength, FocalLengthIn35mmFilm, Orientation, Distance, ObjectHeight);
+	return {'rw' : w, 'rh' : h};
+}
 
 
 
@@ -42,14 +60,11 @@ app.post('/upload', function (req, res, next) {
 	next();
 }, function(req, res) {
 	var form = new formidable.IncomingForm();
-	var caption = '';
-	
 	
 	form.parse(req, function(err, fields, files) {
 		if (err) {
 			return console.log('ERROR', err);
 		}
-		caption = fields.caption;
 	});
 
 	form.on('end', function(fields, files) {
@@ -67,20 +82,61 @@ app.post('/upload', function (req, res, next) {
 					return console.log('ERROR', err);
 				} else {
 					console.log("success!");
-
-					processImageRecognition(res, new_location, caption);
+					LATEST_UPLOAD_LOCATION = new_location;
+					res.writeHead(200); 
+					res.end(JSON.stringify({
+						'status':'ok'
+					}));
 				}
 			});
 		} else {	
 			res.writeHead(200); 
 			res.end(JSON.stringify({
-				'status':'ok'
+				'status':'missing'
 			}));
 		}
 	});
 });
 
+/*
+ * Handle dimensions upload
+ */
+app.post('/dimensions', function (req, res, next) {
+	next();
+}, function(req, res) {
+	var form = new formidable.IncomingForm();
+	var ImageWidth, ImageHeight, FocalLength, FocalLengthIn35mmFilm, Orientation, Distance, ObjectWidth, ObjectHeight;
+	
+	
+	form.parse(req, function(err, fields, files) {
+		if (err) {
+			return console.log('ERROR', err);
+		}
 
+		ImageWidth = fields.ImageWidth;
+		ImageHeight = fields.ImageHeight;
+		FocalLength = fields.FocalLength;
+		FocalLengthIn35mmFilm = fields.FocalLengthIn35mmFilm;
+		Orientation = fields.Orientation;
+		Distance = fields.Distance;
+		ObjectWidth = fields.ObjectWidth;
+		ObjectHeight = fields.ObjectHeight;
+	});
+
+	form.on('end', function(fields, files) {
+		var data = computeValue(ImageWidth, ImageHeight, FocalLength, FocalLengthIn35mmFilm, Orientation, Distance, ObjectWidth, ObjectHeight);
+		
+		res.writeHead(200); 
+		res.end(JSON.stringify({
+			'status':'ok',
+			'data' : data
+		}));
+	});
+});
+
+function processImage(res, s_width, s_height) {
+	
+}
 
 
 
