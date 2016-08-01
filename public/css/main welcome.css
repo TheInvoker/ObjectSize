@@ -118,7 +118,7 @@ canvas {
 	margin:10px;
 }
 #controls .buttons-container label {
-
+	font-size:13px;
 }
 #controls .slider-container {
 	margin:10px;
@@ -137,7 +137,7 @@ canvas {
 	margin:0 3px;
 	font-family:Arial;
 	text-decoration:none;
-	font-size:14px;
+	font-size:13px;
 }
 #reset {
 	background-color:red;
@@ -151,7 +151,6 @@ canvas {
 #back {
 	background-color:#0056b7;
 	color:white;
-	float:right;
 }
 
 
