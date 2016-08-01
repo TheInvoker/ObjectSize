@@ -1,0 +1,59 @@
+body
+{
+  margin: 0;
+  padding: 0;
+  font-family: 'Raleway', sans-serif;
+  height: 100%;
+}
+
+div.ui
+{
+  background-image: url('http://static.vecteezy.com/system/resources/previews/000/094/491/original/polygonal-texture-background-vector.jpg');
+  min-height: 100%;
+}
+
+div.ui:after
+{
+  content: "";
+  display: block;
+}
+
+div.ui:after, div.control-panel
+{
+  display: inline-block;
+  margin-top: -70px;
+}
+
+div.control-panel
+{
+  background-color: black;
+  width: 100%;
+  padding: 10px;
+}
+
+button.button
+{
+  border-radius: 10%;
+  height: 50px;
+  width: 100px;
+  font-family: 'Raleway', sans-serif;
+  color: white;
+  font-size: 20px;
+  border: 0;
+  margin-right: 25px;
+}
+
+button.primary
+{
+  background-color: #3764F4;
+}
+
+button.danger
+{
+  background-color: #F73653;
+}
+
+button.warning
+{
+  background-color: #F7EE36;
+}
