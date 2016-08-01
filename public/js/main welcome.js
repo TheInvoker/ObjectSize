@@ -44,9 +44,6 @@ $(document).ready(function() {
 		$("#cameraSelect").click();
 		return false;
 	});
-	
-	
-
 	$("#image_upload_form").submit(function(e, data) {
 		var formData = new FormData($(this)[0]);
 
