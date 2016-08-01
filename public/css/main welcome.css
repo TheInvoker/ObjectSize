@@ -140,6 +140,25 @@ body {
 	margin:10px;
 }
 
+/* CAROUSEL PAGES */
+.carousel-pages {
+	position:absolute;
+	bottom:0;
+	margin-left:50%;
+	transform:translateX(-50%);
+}
+.carousel-pages-item {
+	background-color:white;
+	border-radius:50%;
+	width:10px;
+	height:10px;
+	display:inline-block;
+	margin:5px;
+	cursor:pointer;
+}
+.carousel-pages-item.selected {
+	background-color:red;
+}
 
 
 /* STEP */
@@ -168,7 +187,6 @@ body {
 	width:100%;
 	display:inline-block;
 }
-
 .color1 {
 	background-color:rgb(104, 183, 7);
 }
