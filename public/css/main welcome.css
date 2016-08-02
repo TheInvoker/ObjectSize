@@ -11,9 +11,21 @@ body {
 	font-family: Raleway;
 	background-color:white;
 }
+.content {
+	overflow-y: auto;
+	overflow-x:hidden;
+	height:100%;
+	flex:0 1 auto;
+	display:flex;
+	flex-flow:column;
+}
+.inner_content {
+	flex:1 0 auto;
+}
 
 
 
+/* CUSTOM */
 .shade {
 	background-color:black;
 }
@@ -32,17 +44,7 @@ body {
 
 
 
-.content {
-	overflow-y: auto;
-	overflow-x:hidden;
-	height:100%;
-	flex:0 1 auto;
-	display:flex;
-	flex-flow:column;
-}
-.inner_content {
-	flex:1 0 auto;
-}
+
 
 
 /* DEMO */
@@ -68,8 +70,6 @@ body {
 	width:100px;
 	height:100px;
 }
-
-
 .menu.close {
 	display:none;
 }
@@ -85,6 +85,7 @@ body {
 
 
 
+/* APP */
 canvas {
 	position:absolute;
 }
@@ -118,7 +119,7 @@ canvas {
 	margin:10px;
 }
 #controls .buttons-container label {
-	font-size:13px;
+	font-size:16px;
 }
 #controls .slider-container {
 	margin:10px;
@@ -139,25 +140,21 @@ canvas {
 #cameraOutput {
 	display:none;
 }
-#reset, #save, #back {
+#back, #save {
 	border-radius:5px;
 	padding:4px;
 	margin:0 3px;
 	font-family:Arial;
 	text-decoration:none;
-	font-size:13px;
+	font-size:15px;
 }
-#reset {
+#back {
 	background-color:red;
 	color:white;
 }
 #save {
 	margin-right:10px;
 	background-color:green;
-	color:white;
-}
-#back {
-	background-color:#0056b7;
 	color:white;
 }
 

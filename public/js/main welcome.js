@@ -149,6 +149,7 @@ function canvasClick(canvas2, context2, canvas3, context3, event, x_scale, y_sca
 	var x = event.offsetX, y = event.offsetY;
 
 	if (state == 0) {
+		resetClick(canvas2, context2, canvas3, context3);
 		c1x = x;
 		c1y = y;
 		drawCircle(context3, x, y, 4);
@@ -172,8 +173,7 @@ function canvasClick(canvas2, context2, canvas3, context3, event, x_scale, y_sca
 		}).trigger("input");
 	}
 	
-	state += 1;
-	return false;
+	state = (state + 1) % 2;
 }
 function resetClick(canvas2, context2, canvas3, context3) {
 	context2.clearRect(0, 0, canvas2.width, canvas2.height);
@@ -181,7 +181,6 @@ function resetClick(canvas2, context2, canvas3, context3) {
 	state = 0;
 	$("#controls_container").hide();
 	$("#slider").unbind("input");
-	return false;
 }
 
 
@@ -272,7 +271,7 @@ function loadedExif(sw, sh, image) {
 	var canvas = $('<canvas id="myCanvas" width="' + sw + 'px" height="' + sh + 'px"></canvas>');
 	var canvas2 = $('<canvas id="myCanvas2" width="' + sw + 'px" height="' + sh + 'px"></canvas>');
 	var canvas3 = $('<canvas id="myCanvas3" width="' + sw + 'px" height="' + sh + 'px"></canvas>');
-	$("#content_container").html(canvas).append(canvas2).append(canvas3);
+	$("#content_container").empty().append(canvas).append(canvas2).append(canvas3);
 	
 	canvas = canvas[0];
 	canvas2 = canvas2[0];
@@ -305,11 +304,6 @@ function loadedExif(sw, sh, image) {
 	
 	$('#myCanvas3').click(function(event) {
 		canvasClick(canvas2, context2, canvas3, context3, event, x_scale, y_scale, exifData);
-		return false;
-	});
-	
-	$('#reset').click(function() {
-		resetClick(canvas2, context2, canvas3, context3);
 		return false;
 	});
 	

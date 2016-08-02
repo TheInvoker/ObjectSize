@@ -196,16 +196,18 @@
 
 		<div id="demo_page" class="close">
 			<div id="content_container">
-				<img id="cameraOutput" width="300px" />
+				<img id="cameraOutput"/>
 				<div class="loading">
 					<img src="images/default.gif"/>
 				</div>
 			</div>
 			<div id="controls_container" class="shadow">
 				<div id="controls">
-					<div class="buttons-container">
-						<a href="javascript:void(0);" class="shadow" title="Go Back" id="back">Back</a><a href="javascript:void(0);" class="shadow" title="Reset" id="reset">Reset</a><a href="javascript:void(0);" class="shadow" title="Submit Image" id="save">Save</a><label for="slider">Target Distance: <span id="sliderVal"></span> feet</label>
-					</div>
+					<div class="buttons-container"><!--
+						--><a href="javascript:void(0);" class="shadow" title="Go Back" id="back">Back</a><!--
+						--><a href="javascript:void(0);" class="shadow" title="Submit Image" id="save">Save</a><!--
+						--><label for="slider">Target Distance: <span id="sliderVal"></span> feet</label><!--
+					--></div>
 					<div class="slider-container">
 						<input id="slider" type="range" min="1" max="20" step="1" value="12">
 					</div>
