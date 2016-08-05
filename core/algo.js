@@ -11,7 +11,6 @@ module.exports = new function() {
 		var ratio_angle = Math.atan(ImageHeight/ImageWidth);
 		var sh = sensor_diagonal * Math.sin(ratio_angle); // sensor height
 		
-		console.log(d, ph, sh, fl, ImageHeight);
 		var rh = (d*ph*sh)/(fl*ImageHeight); // real height in mm
 		
 		return rh;
