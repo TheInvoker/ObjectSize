@@ -1,6 +1,3 @@
-var state = 0;
-var c1x, c1y, c2x, c2y;
-
 function computeValue(ImageWidth, ImageHeight, FocalLength, FocalLengthIn35mmFilm, Orientation, Distance, ObjectWidth, ObjectHeight, success){
 	var formData = {
 		'ImageWidth':ImageWidth,
@@ -58,45 +55,6 @@ function drawCircle(context, centerX, centerY, radius) {
 	context.fillStyle = 'yellow';
 	context.fill();
 	context.closePath();
-}
-
-function canvasClick(canvas2, context2, canvas3, context3, event, x_scale, y_scale, exifData) {
-	var x = event.offsetX, y = event.offsetY;
-
-	if (state == 0) {
-		resetClick(canvas2, context2, canvas3, context3);
-		c1x = x;
-		c1y = y;
-		drawCircle(context3, x, y, 4);
-	} else if (state == 1) {
-		c2x = x;
-		c2y = y;
-		
-		drawCircle(context3, x, y, 4);
-		drawBox(context3, canvas3, c1x, c1y, c2x, c2y);
-		
-		var bw = Math.max(c1x, c2x)-Math.min(c1x, c2x);
-		var bh = Math.max(c1y, c2y)-Math.min(c1y, c2y);
-		
-		var tw = x_scale * bw;
-		var th = y_scale * bh;
-		
-		$("#controls_container").css("display", "inline-block");
-		$("#slider").on("input", function(){
-			$("#sliderVal").html(this.value);
-			updateValues(canvas2, context2, exifData, tw, th);
-		}).trigger("input");
-	}
-	
-	state = (state + 1) % 2;
-}
-
-function resetClick(canvas2, context2, canvas3, context3) {
-	context2.clearRect(0, 0, canvas2.width, canvas2.height);
-	context3.clearRect(0, 0, canvas3.width, canvas3.height);
-	state = 0;
-	$("#controls_container").hide();
-	$("#slider").unbind("input");
 }
 
 function uploadImage(dataURL) {
@@ -239,10 +197,43 @@ function loadedExif(sw, sh, image) {
 		'Orientation' : Orientation
 	};
 	
-	$('#myCanvas3').click(function(event) {
-		canvasClick(canvas2, context2, canvas3, context3, event, x_scale, y_scale, exifData);
-		return false;
+	var c1x, c1y, c2x, c2y, tw, th;
+	
+	$("#slider").on("input", function(){
+		$("#sliderVal").html(this.value);
+		updateValues(canvas2, context2, exifData, tw, th);
 	});
+
+	canvas3.addEventListener("touchstart", function(event) {
+		var x = event.touches[0].pageX;
+		var y = event.touches[0].pageY;
+		c1x = x;
+		c1y = y;
+		context3.clearRect(0, 0, canvas3.width, canvas3.height);
+		drawCircle(context3, c1x, c1y, 4);
+		$("#controls_container").hide();
+		e.preventDefault();
+	}, false);
+	canvas3.addEventListener("touchmove", function(event) {
+		var x = event.touches[0].pageX;
+		var y = event.touches[0].pageY;
+		c2x = x;
+		c2y = y;
+		context3.clearRect(0, 0, canvas3.width, canvas3.height);
+		drawBox(context3, canvas3, c1x, c1y, c2x, c2y);
+		drawCircle(context3, c1x, c1y, 4);
+		drawCircle(context3, c2x, c2y, 4);
+		e.preventDefault();
+	}, false);
+	canvas3.addEventListener("touchend", function(event) {
+		var bw = Math.max(c1x, c2x)-Math.min(c1x, c2x);
+		var bh = Math.max(c1y, c2y)-Math.min(c1y, c2y);
+		tw = x_scale * bw;
+		th = y_scale * bh;
+		$("#controls_container").css("display", "inline-block");
+		$("#slider").trigger("input");
+		e.preventDefault();
+	}, false);
 	
 	$('#save').click(function() {
 		saveClick(this, canvas, context, canvas2, context2, canvas3, context3);
