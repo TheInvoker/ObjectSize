@@ -1,0 +1,89 @@
+/* CANVAS */
+canvas {
+	position:absolute;
+}
+#myCanvas {
+	z-index:0;
+}
+#myCanvas2 {
+	z-index:1;
+}
+#myCanvas3 {
+	z-index:2;
+}
+
+/* CONTROLS */
+#controls_container {
+	text-align:center;
+	position:absolute;
+	bottom:0;
+	z-index:3;
+	width:100%;
+	display:none;
+	
+    background: white; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(white, #898888); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(white, #898888); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(white, #898888); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(white, #898888); /* Standard syntax */
+}
+#controls {
+	text-align:left;
+}
+#controls .buttons-container {
+	margin:10px;
+}
+#controls .buttons-container label {
+	font-size:16px;
+	line-height:25px;
+}
+#controls .slider-container {
+	margin:10px;
+}
+#slider {
+	width:100%;
+	margin:0;
+	padding:0;
+}
+#back, #save {
+	border-radius:5px;
+	padding:4px;
+	margin:0 3px;
+	font-family:Arial;
+	text-decoration:none;
+	font-size:15px;
+}
+#back {
+	background-color:red;
+	color:white;
+}
+#save {
+	margin-right:10px;
+	background-color:green;
+	color:white;
+}
+
+/* hide temporary image element */
+#cameraOutput {
+	display:none;
+}
+
+/* loading image */
+#content_container .loading {
+	text-align:center;
+	padding-top:1em;
+}
+#content_container .loading img {
+	width:30%;
+	max-width:200px;
+}
+
+
+
+/* this part is to remove the dotted border around the slider */
+input[type="range"] {
+	border : 0;
+}
+input[type="range"]::-moz-focus-outer {
+    border : 0;
+}

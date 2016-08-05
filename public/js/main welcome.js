@@ -313,7 +313,7 @@ function loadedExif(sw, sh, image) {
 	});
 	
 	$('#back').click(function() {
-		window.location = ''
+		window.location.href = ''
 		return false;
 	});
 }
