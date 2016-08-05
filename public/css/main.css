@@ -267,6 +267,36 @@ body {
 	padding:1em;
 }
 
+/* GET IT NOW */
+#getitnow {
+	padding:1em;
+}
+.price-table {
+
+}
+.price-table > div {
+	display:inline-block;
+	border-radius:5px;
+	border:1px solid black;
+	margin:1em;
+}
+.price-table > div > div {
+	background-color:#ddd;
+	padding:1em;
+	font-size:1.2em;
+}
+.price-table > div > div:first-child {
+	background-color:#ffbc64;
+	border-radius:5px 5px 0 0;
+}
+.price-table > div > div:last-child {
+	background-color:#abdeff;
+	border-radius:0 0 5px 5px;
+}
+.price-table > div > div:not(:last-child) {
+	border-bottom:1px solid black;
+}
+
 /* FOOTER */
 .footer {
 	padding:1em;
