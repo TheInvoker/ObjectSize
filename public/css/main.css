@@ -39,12 +39,31 @@ body {
 }
 .intro {
 	padding:1em;
+	font-size:1.5em;
 	background-color:#15b386;
 	color:white;
 }
 .heading {
 	font-size:2em;
 	text-align:center;
+}
+.center {
+	text-align:center;
+}
+.icon-link-container > div {
+	width:6%;
+	min-width:100px;
+	border-radius:20px;
+	background-color:#0c9ca7;
+	display:inline-block;
+	padding:1em;
+	margin:1em;
+}
+.icon-link-container > div > a {
+	outline: 0;
+}
+.icon-link {
+	width:100%;
 }
 
 
@@ -243,7 +262,10 @@ body {
 	display:none;
 }
 
-
+/* CONTACT */
+#contact {
+	padding:1em;
+}
 
 /* FOOTER */
 .footer {
