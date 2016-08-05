@@ -1,95 +1,6 @@
-var index = 0;
-var IMAGES = [{
-	'c' : '../images/download.jpg',
-	't' : '../images/mockups3.png'
-}, {
-	'c' : '../images/download2.jpg',
-	't' : '../images/mockups2.png'
-}, {
-	'c' : '../images/download3.jpg',
-	't' : '../images/mockups1.png'
-}];
-
-$(document).ready(function() {
-	$(".menu .menu-collapse-button").click(function() {
-		$(".menu").toggleClass("open");
-		return false;
-	});
-	$(".menu .menu-header").on('click', '.menu-item', function() {
-		$(".menu").removeClass("open");
-		$(".menu-item.selected").removeClass("selected");
-		$(this).addClass("selected");
-		return false;
-	});
-	
-	var interval = -1;
-	for(var i=0; i<IMAGES.length; i+=1) {
-		$(".carousel-pages").append("<div class='carousel-pages-item' data-id='" + i + "'></div>");
-	}
-	$(".carousel-pages-item").click(function() {
-		index = parseInt($(this).attr("data-id"), 10);
-		setImage(index);
-		clearInterval(interval);
-		interval = setInterval(caraSwitch, 6000);
-		return false;
-	});
-	$(".carousel-pages-item").eq(0).click();
-	
-	
-	
-	
-	
-	
-	$("#cameraSelectImage").click(function() {
-		$("#cameraSelect").click();
-		return false;
-	});
-	document.getElementById('cameraSelect').onchange = function (evt) {
-		//$('#image_upload_form').trigger('submit', evt.target || window.event.srcElement);
-		$(".menu, .content, #demo_page").toggleClass("close");
-		handleImage(evt.target || window.event.srcElement);
-	}
-});
-
-function caraSwitch() {
-	index = (index + 1) % 3;
-	setImage(index);
-}
-
-function setImage(index) {
-	var data = IMAGES[index];
-	$(".carousel").css('background-image', "url('" + data.c + "')");
-	$(".phone-template").css('background-image', "url('" + data.t + "')");
-	
-	$(".carousel-pages-item.selected").removeClass("selected");
-	$(".carousel-pages-item").eq(index).addClass("selected");
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var state = 0;
 var c1x, c1y, c2x, c2y;
+
 function computeValue(ImageWidth, ImageHeight, FocalLength, FocalLengthIn35mmFilm, Orientation, Distance, ObjectWidth, ObjectHeight, success){
 	var formData = {
 		'ImageWidth':ImageWidth,
@@ -111,7 +22,7 @@ function computeValue(ImageWidth, ImageHeight, FocalLength, FocalLengthIn35mmFil
 			if (data.status === 'ok') {
 				success(data.data);
 			} else {
-				alert(data.msg);
+				alert(data.data);
 			}
 		},
 		error: function (jqXHR, textStatus, errorThrown) {
@@ -119,6 +30,7 @@ function computeValue(ImageWidth, ImageHeight, FocalLength, FocalLengthIn35mmFil
 		}
 	});
 }
+
 function drawBox(context, canvas, c1x, c1y, c2x, c2y) {
 	context.beginPath();
 	context.strokeStyle="red";
@@ -126,7 +38,8 @@ function drawBox(context, canvas, c1x, c1y, c2x, c2y) {
 	context.stroke();
 	context.closePath();
 }
-function f(canvas, context, exifData, tw, th) {
+
+function updateValues(canvas, context, exifData, tw, th) {
 	var feet = $("#slider")[0].value;
 	var distance = parseFloat(feet) * 304.8;
 	
@@ -138,6 +51,7 @@ function f(canvas, context, exifData, tw, th) {
 		context.fillText((data.rw/10).toPrecision(5) + " cm x " + (data.rh/10).toPrecision(5) + " cm",10,40);
 	});
 }
+
 function drawCircle(context, centerX, centerY, radius) {
 	context.beginPath();
 	context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
@@ -145,6 +59,7 @@ function drawCircle(context, centerX, centerY, radius) {
 	context.fill();
 	context.closePath();
 }
+
 function canvasClick(canvas2, context2, canvas3, context3, event, x_scale, y_scale, exifData) {
 	var x = event.offsetX, y = event.offsetY;
 
@@ -169,12 +84,13 @@ function canvasClick(canvas2, context2, canvas3, context3, event, x_scale, y_sca
 		$("#controls_container").css("display", "inline-block");
 		$("#slider").on("input", function(){
 			$("#sliderVal").html(this.value);
-			f(canvas2, context2, exifData, tw, th);
+			updateValues(canvas2, context2, exifData, tw, th);
 		}).trigger("input");
 	}
 	
 	state = (state + 1) % 2;
 }
+
 function resetClick(canvas2, context2, canvas3, context3) {
 	context2.clearRect(0, 0, canvas2.width, canvas2.height);
 	context3.clearRect(0, 0, canvas3.width, canvas3.height);
@@ -182,8 +98,6 @@ function resetClick(canvas2, context2, canvas3, context3) {
 	$("#controls_container").hide();
 	$("#slider").unbind("input");
 }
-
-
 
 function uploadImage(dataURL) {
 	$.ajax({
@@ -197,7 +111,7 @@ function uploadImage(dataURL) {
 			if (data.status === 'ok') {
 				alert("Saved!");
 			} else {
-				alert(data.msg);
+				alert(data.data);
 			}
 		},
 		error: function (jqXHR, textStatus, errorThrown) {
@@ -209,6 +123,7 @@ function uploadImage(dataURL) {
 function saveClick(link, canvas, context, canvas2, context2, canvas3, context3) {
 	var newCanvas = $('<canvas width="' + canvas.width + '" height="' + canvas.height + '"></canvas>');
 	newCanvas = newCanvas[0];
+	
 	var newContext = newCanvas.getContext('2d');
 	var newImageData = newContext.createImageData(canvas.width, canvas.height);
 	
@@ -252,6 +167,7 @@ function saveClick(link, canvas, context, canvas2, context2, canvas3, context3) 
 	//link.href = href;
 	//link.download = 'canvas.png';
 }
+
 function loadedExif(sw, sh, image) {		
 	var ImageWidth = EXIF.getTag(image, "ImageWidth");
 	var ImageHeight = EXIF.getTag(image, "ImageHeight");
@@ -259,14 +175,22 @@ function loadedExif(sw, sh, image) {
 	var FocalLengthIn35mmFilm = EXIF.getTag(image, "FocalLengthIn35mmFilm");
 	var Orientation = EXIF.getTag(image, "Orientation");
 	
-	var w = ImageWidth, h = ImageHeight;
+	if (ImageWidth==null || ImageHeight==null || FocalLength==null || FocalLengthIn35mmFilm==null || Orientation==null) {
+		alert("Error: Image is missing metadata, it cannot be used. Please try another image taken from a camera.");
+		window.location.href = '';
+		return;
+	}
 	
-	// if you took the image sideways
+	var w = ImageWidth, h = ImageHeight, y_scale = ImageHeight/sh;
+	
+	// if you took the image sideways, swap dimension
 	if (Orientation >= 5) {
 		var t = ImageWidth;
 		ImageWidth = ImageHeight;
 		ImageHeight = t;
 	}
+	
+	var x_scale = ImageWidth/sw, y_scale = ImageHeight/sh;
 		
 	var canvas = $('<canvas id="myCanvas" width="' + sw + 'px" height="' + sh + 'px"></canvas>');
 	var canvas2 = $('<canvas id="myCanvas2" width="' + sw + 'px" height="' + sh + 'px"></canvas>');
@@ -280,19 +204,32 @@ function loadedExif(sw, sh, image) {
 	var context = canvas.getContext('2d');
 	var context2 = canvas2.getContext('2d');
 	var context3 = canvas3.getContext('2d');
-	
-	var Orientation = 6;
+
 	if (Orientation == 6) {
 		var rotate = Math.PI/2;
-		context.translate(sw, 0); 
-		context.rotate(rotate); 
-		context.drawImage(image, 0, 0, w, h, 0, 0, sh, sw);
+		var tx = sw, ty = 0;
+		var dw = sh, dh = sw;
+	} else if (Orientation == 8) {
+		var rotate = -Math.PI/2;
+		var tx = 0, ty = sh;
+		var dw = sh, dh = sw;
+	} else if (Orientation == 3) {
+		var rotate = Math.PI;
+		var tx = sw, ty = sh;
+		var dw = sw, dh = sh;
+	} else if (Orientation == 1) {
+		var rotate = 0;
+		var tx = 0, ty = 0;
+		var dw = sw, dh = sh;
 	} else {
-		context.drawImage(image, 0, 0, w, h, 0, 0, sw, sh);
+		alert("Unhandled orientation value of: " + Orientation);
+		window.location.href = '';
+		return;
 	}
 	
-	var x_scale = ImageWidth/sw;
-	var y_scale = ImageHeight/sh;
+	context.translate(tx, ty); 
+	context.rotate(rotate); 
+	context.drawImage(image, 0, 0, w, h, 0, 0, dw, dh);
 	
 	var exifData = {
 		'ImageWidth' : ImageWidth,
@@ -317,6 +254,7 @@ function loadedExif(sw, sh, image) {
 		return false;
 	});
 }
+
 function loadedImage(sw, sh, result) {
 	var image = document.getElementById("cameraOutput");
 	image.onload = function() {
@@ -326,6 +264,7 @@ function loadedImage(sw, sh, result) {
 	};
 	image.src = result;
 }
+
 function handleImage(tgt) {
 	
 	var files = tgt.files;
@@ -340,7 +279,6 @@ function handleImage(tgt) {
 		fr.readAsDataURL(files[0]);
 	} else {
 		// Not supported
-		// fallback -- perhaps submit the input to an iframe and temporarily store
-		// them on the server until the user's session ends.
+		alert("Please upgrade your browser, we recommend Google Chrome.");
 	}
 }
