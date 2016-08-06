@@ -43,6 +43,9 @@ function drawBox(context, canvas, c1x, c1y, c2x, c2y) {
 
 
 var rw = 0, rh = 0; // mm
+var offsetX = 0, offsetY = 0, selectedWidth = 0, selectedHeight = 0;
+
+
 function getDimensionString() {
 	var msg = (rw/10).toPrecision(5) + " cm x " + (rh/10).toPrecision(5) + " cm";
 	return msg;
@@ -54,8 +57,11 @@ function updateValues(canvas, context, exifData, tw, th) {
 	var distance = parseFloat(feet) * 304.8;
 	
 	computeValue(exifData.ImageWidth, exifData.ImageHeight, exifData.FocalLength, exifData.FocalLengthIn35mmFilm, exifData.Orientation, distance, tw, th, function(data) {
+		
+		// update globals
 		rw = data.rw;
 		rh = data.rh;
+		
 		var msg = getDimensionString();
 		$("#obj-dimensions-text").text(msg);
 	});
@@ -74,7 +80,13 @@ function uploadImage(dataURL) {
 		url : "/upload",
 		type: "POST",
 		data : {
-			'data' : dataURL
+			'data' : dataURL,
+			'rw' : rw,
+			'rh' : rh,
+			'offsetX' : offsetX,
+			'offsetY' : offsetY,
+			'selectedWidth' : selectedWidth,
+			'selectedWidth' : selectedHeight
 		},
 		success: function(data, textStatus, jqXHR) {
 			var data = JSON.parse(data);
@@ -178,7 +190,7 @@ function loadedExif(sw, sh, image) {
 		return;
 	}
 	
-	var w = ImageWidth, h = ImageHeight, y_scale = ImageHeight/sh;
+	var w = ImageWidth, h = ImageHeight;
 	
 	// if you took the image sideways, swap dimension
 	if (Orientation >= 5) {
@@ -266,6 +278,13 @@ function loadedExif(sw, sh, image) {
 		var bh = Math.max(c1y, c2y)-Math.min(c1y, c2y);
 		tw = x_scale * bw;
 		th = y_scale * bh;
+		
+		// update globals
+		offsetX = x_scale * c1x;
+		offsetY = y_scale * c1y;
+		selectedWidth = tw;
+		selectedHeight = th;
+		
 		$("#controls_container").css("display", "inline-block");
 		$("#slider").trigger("input");
 	};
