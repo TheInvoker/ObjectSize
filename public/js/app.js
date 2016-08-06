@@ -1,3 +1,8 @@
+function is_touch_device() {
+  return 'ontouchstart' in window        // works on most browsers 
+      || navigator.maxTouchPoints;       // works on IE10/11 and Surface
+};
+
 function computeValue(ImageWidth, ImageHeight, FocalLength, FocalLengthIn35mmFilm, Orientation, Distance, ObjectWidth, ObjectHeight, success){
 	var formData = {
 		'ImageWidth':ImageWidth,
@@ -204,36 +209,80 @@ function loadedExif(sw, sh, image) {
 		updateValues(canvas2, context2, exifData, tw, th);
 	});
 
-	canvas3.addEventListener("touchstart", function(event) {
-		var x = event.touches[0].pageX;
-		var y = event.touches[0].pageY;
+
+	var start_func = function(x, y) {
 		c1x = x;
 		c1y = y;
+		context2.clearRect(0, 0, canvas2.width, canvas2.height);
 		context3.clearRect(0, 0, canvas3.width, canvas3.height);
 		drawCircle(context3, c1x, c1y, 4);
 		$("#controls_container").hide();
-		e.preventDefault();
-	}, false);
-	canvas3.addEventListener("touchmove", function(event) {
-		var x = event.touches[0].pageX;
-		var y = event.touches[0].pageY;
+	};
+	var move_func = function(x, y) {
 		c2x = x;
 		c2y = y;
 		context3.clearRect(0, 0, canvas3.width, canvas3.height);
 		drawBox(context3, canvas3, c1x, c1y, c2x, c2y);
 		drawCircle(context3, c1x, c1y, 4);
 		drawCircle(context3, c2x, c2y, 4);
-		e.preventDefault();
-	}, false);
-	canvas3.addEventListener("touchend", function(event) {
+	};
+	var end_func = function(event) {
 		var bw = Math.max(c1x, c2x)-Math.min(c1x, c2x);
 		var bh = Math.max(c1y, c2y)-Math.min(c1y, c2y);
 		tw = x_scale * bw;
 		th = y_scale * bh;
 		$("#controls_container").css("display", "inline-block");
 		$("#slider").trigger("input");
-		e.preventDefault();
-	}, false);
+	};
+	
+	if (is_touch_device()) {
+		var getTouchCoor = function(event) {
+			return {'x' : event.touches[0].pageX, 'y' : event.touches[0].pageY};
+		};
+		var start_touch = function(event) {
+			var data = getTouchCoor(event);
+			start_func(data.x, data.y);
+			event.preventDefault();
+		};
+		var move_touch = function(event) {
+			var data = getTouchCoor(event);
+			move_func(data.x, data.y);
+			event.preventDefault();
+		};
+		var end_touch = function(event) {
+			end_func(event);
+			event.preventDefault();
+		};
+		canvas3.addEventListener("touchstart", start_touch, false);
+		canvas3.addEventListener("touchmove", move_touch, false);
+		canvas3.addEventListener("touchend", end_touch, false);
+	} else {
+		var mouse_down = false;
+		var getMouseCoor = function(event) {
+			return {'x' : event.offsetX, 'y' : event.offsetY};
+		};
+		var start_mouse = function(event) {
+			mouse_down = true;
+			var data = getMouseCoor(event);
+			start_func(data.x, data.y);
+			event.preventDefault();
+		};
+		var move_mouse = function(event) {
+			if (mouse_down) {
+				var data = getMouseCoor(event);
+				move_func(data.x, data.y);
+			}
+			event.preventDefault();
+		};
+		var end_mouse = function(event) {
+			mouse_down = false;
+			end_func(event);
+			event.preventDefault();
+		};
+		canvas3.addEventListener("mousedown", start_mouse, false);
+		canvas3.addEventListener("mousemove", move_mouse, false);
+		canvas3.addEventListener("mouseup", end_mouse, false);
+	}
 	
 	$('#save').click(function() {
 		saveClick(this, canvas, context, canvas2, context2, canvas3, context3);
