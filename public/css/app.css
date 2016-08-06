@@ -12,6 +12,16 @@ canvas {
 	z-index:2;
 }
 
+
+.smoothBG {
+    background: white; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(white, #BDBDBD); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(white, #BDBDBD); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(white, #BDBDBD); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(white, #BDBDBD); /* Standard syntax */
+}
+
+
 /* CONTROLS */
 #controls_container {
 	text-align:center;
@@ -20,12 +30,6 @@ canvas {
 	z-index:3;
 	width:100%;
 	display:none;
-	
-    background: white; /* For browsers that do not support gradients */
-    background: -webkit-linear-gradient(white, #898888); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(white, #898888); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(white, #898888); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(white, #898888); /* Standard syntax */
 }
 #controls {
 	text-align:left;
@@ -45,23 +49,52 @@ canvas {
 	margin:0;
 	padding:0;
 }
-#back, #save {
-	border-radius:5px;
-	padding:4px;
-	margin:0 3px;
+
+
+
+.more-buttons {
+	width:20px;
+	height:20px;
+	background-repeat:no-repeat;
+	background-size:100%;
+	background-image:url('../images/ic_more_vert_black_24px.svg');
+	float:right;
+	cursor:pointer;
+}
+.buttons-menu {
+	display:none;
+	position:absolute;
+	right:4px;
+	top:-137px;
+}
+.buttons-menu.open {
+	display:block;
+}
+.buttons-menu > div {
+
+}
+.buttons-menu > div > a {
 	font-family:Arial;
 	text-decoration:none;
 	font-size:15px;
+	color:black;
+	display:block;
+	padding:4px;
 }
-#back {
-	background-color:red;
-	color:white;
+.buttons-menu > div > a > img {
+	width:20px;
+	height:20px;
+	display:inline-block;
+	margin-right:5px;
+	position:relative;
+	top:4px;
 }
-#save {
-	margin-right:10px;
-	background-color:green;
-	color:white;
+.buttons-menu > div:not(:last-child) {
+	border-bottom:1px solid black;
 }
+
+
+
 
 /* hide temporary image element */
 #cameraOutput {

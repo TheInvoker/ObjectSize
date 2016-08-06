@@ -217,6 +217,7 @@ function loadedExif(sw, sh, image) {
 		context3.clearRect(0, 0, canvas3.width, canvas3.height);
 		drawCircle(context3, c1x, c1y, 4);
 		$("#controls_container").hide();
+		$(".buttons-menu").removeClass("open");
 	};
 	var move_func = function(x, y) {
 		c2x = x;
@@ -291,6 +292,11 @@ function loadedExif(sw, sh, image) {
 	
 	$('#back').click(function() {
 		window.location.href = ''
+		return false;
+	});
+	
+	$(".more-buttons").click(function() {
+		$(".buttons-menu").toggleClass("open");
 		return false;
 	});
 }
