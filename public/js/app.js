@@ -300,6 +300,7 @@ function loadedExif(sw, sh, image) {
 	
 	
 	$("#retake-button").click(function() {
+		location.reload();
 		return false;
 	});
 	$('#save-button').click(function() {
@@ -310,7 +311,7 @@ function loadedExif(sw, sh, image) {
 		downloadClick(this, canvas, context, canvas2, context2, canvas3, context3);
 	});
 	$('#back-button').click(function() {
-		window.location.href = ''
+		window.location.href = '/';
 		return false;
 	});
 	
@@ -333,6 +334,8 @@ function loadedImage(sw, sh, result) {
 }
 
 function handleImage(tgt) {
+	$("#cameraSelectImage-container").remove();
+	$("#content_container .loading").show();
 	
 	var files = tgt.files;
 	var sw = document.body.clientWidth, sh = document.body.clientHeight;
@@ -349,3 +352,14 @@ function handleImage(tgt) {
 		alert("Please upgrade your browser, we recommend Google Chrome.");
 	}
 }
+
+$(document).ready(function() {
+	document.getElementById('cameraSelect').onchange = function (evt) {
+		handleImage(evt.target || window.event.srcElement);
+	}
+	
+	$("#cameraSelectImage").click(function() {
+		$("#cameraSelect").click();
+		return false;
+	});
+});

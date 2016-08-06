@@ -34,16 +34,6 @@ $(document).ready(function() {
 		return false;
 	});
 	$(".carousel-pages-item").eq(0).click();
-	
-	$("#cameraSelectImage").click(function() {
-		$("#cameraSelect").click();
-		return false;
-	});
-	
-	document.getElementById('cameraSelect').onchange = function (evt) {
-		$(".menu, .content, #demo_page").toggleClass("close");
-		handleImage(evt.target || window.event.srcElement);
-	}
 });
 
 function caraSwitch() {

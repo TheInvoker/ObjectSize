@@ -1,3 +1,12 @@
+html, body {
+	padding: 0;
+	margin: 0;
+	height: 100%;
+}
+body {
+	font-family: Raleway;
+}
+
 /* CANVAS */
 canvas {
 	position:absolute;
@@ -25,6 +34,9 @@ canvas {
 
 #image_upload_form {
 	display:none;
+}
+#cameraSelectImage-container {
+	text-align:center;
 }
 #cameraSelectImage {
 	border-radius:50%;
@@ -127,6 +139,7 @@ canvas {
 #content_container .loading {
 	text-align:center;
 	padding-top:1em;
+	display:none;
 }
 #content_container .loading img {
 	width:30%;

@@ -230,7 +230,17 @@ body {
 	text-align:center;
 	padding:1em;
 }
-
+.trynowbutton {
+	display:inline-block;
+	margin:2em;
+}
+.trynowbutton a {
+	text-decoration:none;
+	color:white;
+	font-size:2em;
+	padding:10px;
+	background-color:#ff2b76;
+}
 
 
 /* CONTACT */
