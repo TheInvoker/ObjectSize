@@ -9,16 +9,12 @@ var connectionString = process.env.DATABASE_URL || 'postgres://postgres:johncena
 var db = pgp(connectionString);
 db.connect();
 
-db.query("SELECT * FROM pg_stat_activity WHERE datname = 'test'; \
-SELECT pg_terminate_backend (pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'test';").then(function()
+db.query("DROP TABLE users, company, user_company, images, tag, tag_images").then(function()
 {
-  db.query("DROP DATABASE test").then(function()
-  {
-    createDatabases(db);
-  }).catch(function(err)
-  {
-    console.log(err);
-  });
+  createDatabases(db);
+}).catch(function(err)
+{
+  console.log("C");
 });
 
 function createDatabases(db)
