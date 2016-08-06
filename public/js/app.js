@@ -41,16 +41,23 @@ function drawBox(context, canvas, c1x, c1y, c2x, c2y) {
 	context.closePath();
 }
 
+
+var rw = 0, rh = 0; // mm
+function getDimensionString() {
+	var msg = (rw/10).toPrecision(5) + " cm x " + (rh/10).toPrecision(5) + " cm";
+	return msg;
+}
+
+
 function updateValues(canvas, context, exifData, tw, th) {
 	var feet = $("#slider")[0].value;
 	var distance = parseFloat(feet) * 304.8;
 	
-	var rw = computeValue(exifData.ImageWidth, exifData.ImageHeight, exifData.FocalLength, exifData.FocalLengthIn35mmFilm, exifData.Orientation, distance, tw, th, function(data) {
-		context.clearRect(0, 0, canvas.width, canvas.height);
-		context.fillStyle="red";
-		context.font = "15px Raleway";
-		context.fillText("Target distance: " + feet + " feet",10,20);
-		context.fillText((data.rw/10).toPrecision(5) + " cm x " + (data.rh/10).toPrecision(5) + " cm",10,40);
+	computeValue(exifData.ImageWidth, exifData.ImageHeight, exifData.FocalLength, exifData.FocalLengthIn35mmFilm, exifData.Orientation, distance, tw, th, function(data) {
+		rw = data.rw;
+		rh = data.rh;
+		var msg = getDimensionString();
+		$("#obj-dimensions-text").text(msg);
 	});
 }
 
@@ -83,7 +90,19 @@ function uploadImage(dataURL) {
 	});
 }
 
+
+
+
+
 function getCanvasDataHref(canvas, context, canvas2, context2, canvas3, context3) {
+	
+	var feet = $("#slider")[0].value;
+	context2.clearRect(0, 0, canvas2.width, canvas2.height);
+	context2.fillStyle="red";
+	context2.font = "15px Raleway";
+	context2.fillText("Target distance: " + feet + " feet",10,20);
+	context2.fillText(getDimensionString(),10,40);
+	
 	var newCanvas = $('<canvas width="' + canvas.width + '" height="' + canvas.height + '"></canvas>');
 	newCanvas = newCanvas[0];
 	
@@ -124,10 +143,12 @@ function getCanvasDataHref(canvas, context, canvas2, context2, canvas3, context3
 	
 	newContext.putImageData(newImageData, 0, 0); // at coords 0,0\
 	
+	context2.clearRect(0, 0, canvas2.width, canvas2.height);
+	
 	return newCanvas.toDataURL();
 }
-function saveClick(canvas, context, canvas2, context2, canvas3, context3) {
-	var href = getCanvasDataHref(canvas, context, canvas2, context2, canvas3, context3);
+function saveClick(canvas) {
+	var href = canvas.toDataURL();
 	uploadImage(href);
 }
 function downloadClick(link, canvas, context, canvas2, context2, canvas3, context3) {
@@ -304,7 +325,7 @@ function loadedExif(sw, sh, image) {
 		return false;
 	});
 	$('#save-button').click(function() {
-		saveClick(canvas, context, canvas2, context2, canvas3, context3);
+		saveClick(canvas);
 		return false;
 	});
 	$("#download-button").click(function() {
