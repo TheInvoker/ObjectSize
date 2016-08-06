@@ -83,7 +83,7 @@ function uploadImage(dataURL) {
 	});
 }
 
-function saveClick(link, canvas, context, canvas2, context2, canvas3, context3) {
+function getCanvasDataHref(canvas, context, canvas2, context2, canvas3, context3) {
 	var newCanvas = $('<canvas width="' + canvas.width + '" height="' + canvas.height + '"></canvas>');
 	newCanvas = newCanvas[0];
 	
@@ -124,12 +124,25 @@ function saveClick(link, canvas, context, canvas2, context2, canvas3, context3) 
 	
 	newContext.putImageData(newImageData, 0, 0); // at coords 0,0\
 	
-	var href = newCanvas.toDataURL();
-	uploadImage(href);
-	
-	//link.href = href;
-	//link.download = 'canvas.png';
+	return newCanvas.toDataURL();
 }
+function saveClick(canvas, context, canvas2, context2, canvas3, context3) {
+	var href = getCanvasDataHref(canvas, context, canvas2, context2, canvas3, context3);
+	uploadImage(href);
+}
+function downloadClick(link, canvas, context, canvas2, context2, canvas3, context3) {
+	var href = getCanvasDataHref(canvas, context, canvas2, context2, canvas3, context3);
+	link.href = href;
+	link.download = 'canvas.png';
+}
+
+
+
+
+
+
+
+
 
 function loadedExif(sw, sh, image) {		
 	var ImageWidth = EXIF.getTag(image, "ImageWidth");
@@ -285,15 +298,23 @@ function loadedExif(sw, sh, image) {
 		canvas3.addEventListener("mouseup", end_mouse, false);
 	}
 	
-	$('#save').click(function() {
-		saveClick(this, canvas, context, canvas2, context2, canvas3, context3);
+	
+	$("#retake-button").click(function() {
 		return false;
 	});
-	
-	$('#back').click(function() {
+	$('#save-button').click(function() {
+		saveClick(canvas, context, canvas2, context2, canvas3, context3);
+		return false;
+	});
+	$("#download-button").click(function() {
+		downloadClick(this, canvas, context, canvas2, context2, canvas3, context3);
+	});
+	$('#back-button').click(function() {
 		window.location.href = ''
 		return false;
 	});
+	
+
 	
 	$(".more-buttons").click(function() {
 		$(".buttons-menu").toggleClass("open");
