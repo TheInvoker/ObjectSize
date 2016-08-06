@@ -22,6 +22,28 @@ canvas {
 }
 
 
+
+#image_upload_form {
+	display:none;
+}
+#cameraSelectImage {
+	border-radius:50%;
+	padding:1em;
+	display:inline-block;
+	border:1px solid black;
+	cursor:pointer;
+	margin-top:1em;
+}
+#cameraSelectImage:hover {
+	background-color:orange;
+}
+#cameraSelectImage img {
+	width:100px;
+	height:100px;
+}
+
+
+
 /* CONTROLS */
 #controls_container {
 	text-align:center;

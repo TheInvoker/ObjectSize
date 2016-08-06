@@ -22,12 +22,6 @@ body {
 .inner_content {
 	flex:1 0 auto;
 }
-.menu.close {
-	display:none;
-}
-.content.close {
-	display:none;
-}
 
 
 /* CUSTOM */
@@ -236,30 +230,8 @@ body {
 	text-align:center;
 	padding:1em;
 }
-#image_upload_form {
-	display:none;
-}
-#cameraSelectImage {
-	border-radius:50%;
-	padding:1em;
-	display:inline-block;
-	border:1px solid black;
-	cursor:pointer;
-	margin-top:1em;
-}
-#cameraSelectImage:hover {
-	background-color:orange;
-}
-#cameraSelectImage img {
-	width:100px;
-	height:100px;
-}
-#demo_page {
-	display:block;
-}
-#demo_page.close {
-	display:none;
-}
+
+
 
 /* CONTACT */
 #contact {
