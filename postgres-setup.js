@@ -42,7 +42,7 @@ function makeImages()
   db.query("CREATE TABLE images (id serial primary key, user_id integer REFERENCES users, \
     filepath text, px_width integer, px_height integer, real_width decimal, \
     real_height decimal, offsetX integer, offsetY integer, tag_id integer, \
-    company_id integer REFERENCES company, date_created date, date_modified date, active boolean)").then(function() {
+    company_id integer REFERENCES company, date_created date, date_modified date, note varchar(256), active boolean)").then(function() {
         makeTags();
     }).catch(function(err) {
         console.log("d");
