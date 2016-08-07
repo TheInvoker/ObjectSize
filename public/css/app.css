@@ -7,6 +7,9 @@ body {
 	font-family: Raleway;
 }
 
+
+
+
 /* CANVAS */
 canvas {
 	position:absolute;
@@ -21,7 +24,7 @@ canvas {
 	z-index:2;
 }
 
-
+/* CUSTOM */
 .smoothBG {
     background: white; /* For browsers that do not support gradients */
     background: -webkit-linear-gradient(white, #BDBDBD); /* For Safari 5.1 to 6.0 */
