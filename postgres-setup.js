@@ -58,7 +58,7 @@ function makeTags()
 
 function makeUserCompany()
 {
-  db.query("CREATE TABLE user_company (company_id integer REFERENCES company, user_id integer REFERENCES users, \
+  db.query("CREATE TABLE user_company (user_id integer REFERENCES users, company_id integer REFERENCES company, \
         PRIMARY KEY(company_id, user_id))").then(function() {
         makeImagesTag();
     }).catch(function(err) {
@@ -106,7 +106,6 @@ function insertTags()
   db.query("INSERT INTO tag (name) VALUES ('aaa'), \
               ('bbbb'), ('cccc')").then(function()
   {
-    console.log("all items added");
     insertImage();
   }).catch(function(err)
   {
@@ -118,21 +117,25 @@ function insertImage()
 {
   db.query("INSERT INTO images (user_id, filepath, px_width, px_height, real_width, \
     real_height, offsetX, offsetY, tag_id, company_id, active) VALUES (1, 'dsfasfafd.txt', 10, 10, 50, 50, 2, 2, 1, 1, true), \
-    (2, 'cat.txt', 2, 5, 3, 3, 4, 4, 2, 2, true)").then(function()
+    (2, 'cat.txt', 2, 5, 3, 3, 4, 4, 2, 2, true); \
+    INSERT INTO tag_images VALUES (1, 1); \
+    INSERT INTO user_company VALUES (1, 2), (1, 3);").then(function()
     {
       getItems();
-    }).catch(function()
+    }).catch(function(err)
     {
-      console.log("Something wrong");
+      console.log(err);
     });
 }
 
 function getItems()
 {
-  // Just testing a join
-  db.query("SELECT images.id, company.name, filepath FROM images LEFT JOIN company ON company.id = images.user_id").then(function(data)
+  // Just testing a join (not sure if correct way of using the three-tiered relation lolol)
+  db.query("SELECT users.username as user, company.name as companyName FROM users, company, user_company \
+    WHERE user_company.user_id = users.id AND \
+    user_company.company_id = company.id").then(function(data)
   {
-    console.log("%s", "Here is the items");
+    console.log("%s", "All items added. Here is some sample data:");
     console.log(data);
   }).catch(function(err)
   {
@@ -144,3 +147,32 @@ function createDatabases(db)
 {
   makeUsers();
 }
+
+/*
+  REMAINING QUERIES TO ADD
+
+  - check if user logged in
+   -  retrieve username
+   -  retrieve company associations; pagination
+  - select images associated with company, ordered by time descending; pagination (on image click)
+  - create user upon registration
+  - create company upon registration
+  - insert and delete user-company associations
+  - search for images by id (client), pagination
+  - search for image by tag (client), pagination
+  - search for image by date/time (client), pagination
+  - search for images by company (client), pagination
+  - search images by dimension (client + company), pagination
+  - search for clients by username or email (company), pagination
+  - search for images by client, tags or date (company), pagination
+  - get company information by id
+  - get image information by id
+  - get client information by id
+  - delete images by id
+  - client/company deactivates account
+  - insert image to database
+  - delete image from database
+  - update client information
+  - update company information
+  - update image information (tags for example)
+*/
